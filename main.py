@@ -219,6 +219,11 @@ def display_results(results: dict):
     st.markdown("### 📊 Company Overview")
     st.info(results['company_summary'])
     
+    # News & Funding Summary
+    if results.get('news_summary'):
+        st.markdown("### 📰 Recent News & Business Updates")
+        st.success(results['news_summary'])
+    
     # Metrics
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -263,14 +268,13 @@ def display_results(results: dict):
     
     for idx, use_case in enumerate(results['ai_use_cases'], 1):
         # Use unique key based on company and index to force refresh
-        expander_key = f"{company_key}_usecase_{idx}_{st.session_state.result_id}"
         with st.expander(f"**{idx}. {use_case['use_case']}**", expanded=idx == 1):
             st.markdown(f"**Description:** {use_case['description']}")
             
             # Resources tabs
-            tab1, tab2, tab3, tab4 = st.tabs(["📚 arXiv", "🤗 Hugging Face", "📊 Kaggle", "💻 GitHub"])
+            rtab1, rtab2, rtab3, rtab4 = st.tabs(["📚 arXiv", "🤗 Hugging Face", "📊 Kaggle", "💻 GitHub"])
             
-            with tab1:
+            with rtab1:
                 st.markdown("#### Academic Papers")
                 if use_case['resources']['arxiv']:
                     for paper in use_case['resources']['arxiv']:
@@ -278,27 +282,28 @@ def display_results(results: dict):
                 else:
                     st.info("No arXiv papers found")
             
-            with tab2:
+            with rtab2:
                 st.markdown("#### Models & Datasets")
                 if use_case['resources']['huggingface']:
                     for item in use_case['resources']['huggingface']:
-                        st.markdown(f"- [{item['name']}]({item['url']})")
+                        icon = "🤗"
+                        st.markdown(f"- {icon} [{item['name']}]({item['url']})")
                 else:
                     st.info("No Hugging Face resources found")
             
-            with tab3:
-                st.markdown("#### Datasets & Notebooks")
+            with rtab3:
+                st.markdown("#### Kaggle Resources")
                 if use_case['resources']['kaggle']:
                     for item in use_case['resources']['kaggle']:
                         st.markdown(f"- [{item['title']}]({item['url']})")
                 else:
                     st.info("No Kaggle resources found")
             
-            with tab4:
-                st.markdown("#### Repositories")
+            with rtab4:
+                st.markdown("#### GitHub Repositories")
                 if use_case['resources']['github']:
                     for repo in use_case['resources']['github']:
-                        stars = f"⭐ {repo['stars']}" if repo['stars'] > 0 else ""
+                        stars = f"⭐ {repo['stars']}" if repo.get('stars', 0) > 0 else ""
                         st.markdown(f"- [{repo['name']}]({repo['url']}) {stars}")
                 else:
                     st.info("No GitHub repositories found")

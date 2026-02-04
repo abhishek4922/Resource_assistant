@@ -14,7 +14,8 @@ A sophisticated multi-agent AI system that analyzes companies, discovers relevan
 - **Verifier Agent**: Validates completeness and normalizes outputs
 
 ### Real API Integrations
-- 🔍 **DuckDuckGo**: Web search for company information
+- 🔍 **DuckDuckGo**: Web search for company & news info
+- 📰 **NewsAPI**: Latest company news and funding rounds
 - 📚 **arXiv**: Academic papers and research
 - 🤗 **Hugging Face**: Pre-trained models and datasets
 - 📊 **Kaggle**: Datasets and notebooks
@@ -22,7 +23,8 @@ A sophisticated multi-agent AI system that analyzes companies, discovers relevan
 
 ### AI-Powered Analysis
 - Company summarization using LLM
-- Automatic AI use-case generation
+- **News & Funding Analysis** (Funding rounds, Investors, Recent developments)
+- Automatic AI use-case generation (Exactly 3 tailored use-cases)
 - Structured JSON outputs
 - Schema-constrained prompting
 
@@ -40,6 +42,7 @@ ai_ops_assistant/
 │
 ├── tools/
 │   ├── duckduckgo_tool.py    # Web search
+│   ├── news_tool.py          # News & Funding search
 │   ├── arxiv_tool.py         # Academic papers
 │   ├── huggingface_tool.py   # Models & datasets
 │   ├── kaggle_tool.py        # Datasets & notebooks
@@ -62,6 +65,7 @@ ai_ops_assistant/
 
 - Python 3.8 or higher
 - Groq API key (free at [console.groq.com](https://console.groq.com/))
+- (Optional) NewsAPI key (free at [newsapi.org](https://newsapi.org/))
 - (Optional) GitHub Personal Access Token for higher rate limits
 
 ### 2. Installation
@@ -87,6 +91,7 @@ Edit `.env` and add your API keys:
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 GITHUB_TOKEN=your_github_token_here  # Optional
+NEWS_API_KEY=your_news_api_key_here  # Optional (Recommended for better news)
 ```
 
 ### 4. Run the Application
@@ -107,8 +112,9 @@ The application will open in your browser at `http://localhost:8501`
 2. Click "🚀 Analyze"
 3. Wait for the multi-agent system to:
    - Search for company information
+   - **Analyze News & Funding**
    - Generate a summary
-   - Propose AI use-cases
+   - Propose **3** AI use-cases
    - Find resources from all platforms
 4. Explore the results in expandable cards
 5. Download JSON or text reports
@@ -125,6 +131,7 @@ Analyze company: Swiggy
 {
   "company": "Swiggy",
   "company_summary": "Swiggy is India's leading food delivery platform...",
+  "news_summary": "**💰 Funding & Financials:**\n- Raised $700M in Series K...",
   "ai_use_cases": [
     {
       "use_case": "Demand Forecasting",
@@ -162,8 +169,9 @@ User Input → Planner Agent → Executor Agent → Verifier Agent → Final Out
 
 2. **Executor Agent**
    - Searches DuckDuckGo for company info
-   - Calls LLM to summarize company
-   - Generates 3-5 AI use-cases via LLM
+   - **Fetches News/Funding (NewsAPI + DDG Fallback)**
+   - Calls LLM to summarize company & news
+   - Generates **3** AI use-cases via LLM
    - Searches all 4 platforms for each use-case
    - Returns structured results
 
@@ -206,6 +214,11 @@ User Input → Planner Agent → Executor Agent → Verifier Agent → Final Out
 - **Get Key**: [console.groq.com](https://console.groq.com/)
 - **Free Tier**: 30 requests/minute
 - **Models**: Llama 3.1 70B, Mixtral, etc.
+
+### NewsAPI (Optional)
+- **Get Key**: [newsapi.org](https://newsapi.org/)
+- **Purpose**: Better news & funding data
+- **Fallback**: DuckDuckGo used if missing
 
 ### GitHub (Optional)
 - **Get Token**: [github.com/settings/tokens](https://github.com/settings/tokens)

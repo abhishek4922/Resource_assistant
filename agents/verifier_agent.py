@@ -134,6 +134,7 @@ class VerifierAgent:
         normalized = {
             "company": results.get("company", ""),
             "company_summary": results.get("company_summary", ""),
+            "news_summary": results.get("news_summary", ""),
             "ai_use_cases": []
         }
         
