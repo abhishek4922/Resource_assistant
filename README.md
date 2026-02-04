@@ -334,6 +334,19 @@ The system guarantees this output structure:
 - The system has fallbacks for LLM failures
 - Check Groq API status if persistent
 
+### JSON Parsing Errors
+- The system has fallbacks for LLM failures
+- Check Groq API status if persistent
+
+---
+
+## ⚠️ Known Limitations & Tradeoffs
+
+1.  **NewsAPI Restrictions**: The free tier of NewsAPI has a delay on articles and limits the number of requests. The system falls back to DuckDuckGo, which provides less structured data.
+2.  **LLM Context Window**: Extremely large search results are truncated before being sent to the LLM to prevent context window overflow, which might occasionally miss minor details.
+3.  **Rate Limiting**: Without a GitHub Token, code repository searches are limited to 60/hour. Adding a token is highly recommended for production use.
+4.  **Processing Speed**: The multi-agent verification step adds latency to ensure quality. We prioritized accuracy over raw speed.
+
 ---
 
 ## 🚀 Future Enhancements
